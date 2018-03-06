@@ -43,28 +43,39 @@ cls
 
 #   Resource Group
 
-# Create new resource group in eastus
+# Create Resource group
+# Name is not unigue in Azure
+# Important: Resource Group NAME IS used through the rest of this script, 
+# so if you change it, you will have to change it elsewhere
+# More info on Resource Groups
+# https://docs.microsoft.com/en-us/azure/azure-resource-manager/management-groups-overview
 New-AzureRMResourceGroup -name AGWPS -location eastus
 
 ###################################################
 # 
 # Storage accounts - 
-# we use storage accounts for storing disk image and boot diagnostics/logs
-#
-# Create a new premium storage account for our vm's (select a new name, must be unique in AZ)
-New-AzureRmStorageAccount –StorageAccountName agwpskolkestore01 -Location eastus -ResourceGroupName AGWPS -SkuName Premium_LRS
 
-# create standard storage account for boot diagnostics (select a new name, name must be unique in AZ)
-New-AzureRmStorageAccount –StorageAccountName agwpskolkestore02 -Location eastus -ResourceGroupName AGWPS -SkuName Standard_LRS
+# create Standard Storage account for boot diagnostics (select a new name, name must be unique in AZ)
+# name is lowercase alpha and numbers - no special characters
+# note: the name is not used in the rest of this script so you don't have to be too picky
+New-AzureRmStorageAccount –StorageAccountName ************ -Location eastus -ResourceGroupName AGWPS -SkuName Standard_LRS
+
+# Premium Storage No longer necessary for managed disks virtual machines 
+# Create a new premium storage account for our vm's (select a new name, must be unique in AZ)
+# New-AzureRmStorageAccount –StorageAccountName ************ -Location eastus -ResourceGroupName AGWPS -SkuName Premium_LRS
 
 ##############################################################################
 
 #           Network Security Group (NSG's)
 
 ##############################################################################
+# Create Network Security Group (NSG's)
+# About NSG's
+# https://docs.microsoft.com/en-us/azure/virtual-network/virtual-networks-nsg
+
 # To Create Network Security Group (NSG's)
-# In Powershell, we create the rules, load in variables, 
-# and then execute command to create and set rules
+# In Powershell, this is different than CLI. Here we create the rules, load in variables, 
+#   and then execute command to create and set rules
 #
 # NSG rules - define traffic in/out, allow/deny
 $rule1 = New-AzureRmNetworkSecurityRuleConfig -Name web-rule -Description "Allow HTTP" `
@@ -88,16 +99,21 @@ $nsg
 #
 #       IP Addresses for Resources 
 #
-# Create public ip addresses for resources, 2 vm's (DNS names must be unique)
+# Create public ip addresses for resources, 2 vm's 
+# change the dns-name to be unique. lowercase numeric only, no special characters
 # 
 # Note: we are using static for this lab, just so we have a consistent IP address to go to for testing.
 # More common use case is to use dynamic IP addresses for VM's.
 
 New-AzureRmPublicIpAddress -Name agwpsvm-ip01 -ResourceGroupName agwps  `
--AllocationMethod Static -DomainNameLabel agwpsvmip01 -Location eastus
+-AllocationMethod Static -DomainNameLabel *************** -Location eastus
 
 New-AzureRmPublicIpAddress -Name agwpsvm-ip02 -ResourceGroupName agwps  `
--AllocationMethod Static -DomainNameLabel agwpsvmip02 -Location eastus
+-AllocationMethod Static -DomainNameLabel *************** -Location eastus
+
+# About Azure Public IP addresses
+# https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-ip-addresses-overview-arm
+
 
 # Get Public IP Address
 Get-AzureRmPublicIpAddress -ResourceGroupName agwps | select name, ipaddress 
@@ -111,7 +127,9 @@ Get-AzureRmPublicIpAddress -ResourceGroupName agwps | select name, ipaddress
 #
 #  Create Virtual network with Subnets for AGW and VM's
 #  Note: App Gateway needs to be in a seperate Subnet from VMs.
-# 
+#  About Azure VNet's
+#  https://docs.microsoft.com/en-us/azure/virtual-network/virtual-networks-overview
+
 # 
 $Subnet = New-AzureRmVirtualNetworkSubnetConfig -Name "AGWPSSubnet" -AddressPrefix 10.0.0.0/24
 
@@ -136,12 +154,20 @@ Set-AzureRmVirtualNetwork -VirtualNetwork $vnet
 #   Virtual Machines and Availability Set
 #
 ##############################################################################
+# About Azure Windows VM's 
+# https://docs.microsoft.com/en-us/azure/virtual-machines/windows/overview
+# We are creating Windows VM's and setting them up as Webservers for our Lab
 
 # create new availability set for VM's defining default + update domains
 ### We are going to create 2 vm's in vnet / subnet / availability set
 
 New-AzureRmAvailabilitySet -ResourceGroupName "AGWPS" -Name "AGWPS-ASet" -Location eastus `
 -PlatformFaultDomainCount 2 -PlatformUpdateDomainCount 2 -sku Aligned
+
+# About Availability Sets
+# https://docs.microsoft.com/en-us/azure/virtual-machines/windows/tutorial-availability-sets?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json#availability-set-overview
+
+
 
 #######################################################################
 #
@@ -212,6 +238,9 @@ mstsc /v: $pip2.IpAddress
 #  Create Application Gateway 
 
 ##############################################################################
+# About Application Gateways
+# https://docs.microsoft.com/en-us/azure/application-gateway/application-gateway-introduction
+
 # NOTE: This example won't work until the VM's have the Web Server Tools installed in previous step.
 #
 # First we create an IP addy for AppGW,
@@ -290,6 +319,9 @@ start-azurermvm -ResourceGroupName agwps -name agwpsvm-02
 # This Scenario builds the following
 #   WEST --> Resource Group - ALB + VNETs/Subnets - 2 VM's in Availability Set
 
+# Docs about ALB and Powershell
+# https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-get-started-internet-arm-ps
+
 cls 
 ##############################################################################
 # Start with a New Resource Group
@@ -299,13 +331,14 @@ New-AzureRMResourceGroup -name ALBPS -location westus2
 
 ##############################################################################
 
-# Create a new premium storage account.
-New-AzureRmStorageAccount –StorageAccountName albpsstoragesavn01 -Location westus2 `
--ResourceGroupName ALBPS -SkuName Premium_LRS
-
 # create standard storage account for boot diagnostics 
-New-AzureRmStorageAccount –StorageAccountName albpsstoragesavn02 -Location westus2 `
+New-AzureRmStorageAccount –StorageAccountName **************** -Location westus2 `
 -ResourceGroupName ALBPS -SkuName Standard_LRS
+
+# Premium Storage no longer necessary with Managed Disks
+# Create a new premium storage account.
+# New-AzureRmStorageAccount –StorageAccountName **************** -Location westus2 `
+# -ResourceGroupName ALBPS -SkuName Premium_LRS
 
 ##############################################################################
 #
@@ -372,11 +405,12 @@ Get-AzureRmResource | select name, resourcetype, resourcegroupname, location
 # Virtual IP Addresses 
 #
 # Create 2 New IP Addresses for 2 new VM's (DNS names must be unique)
+# Change DomainNamelabel 
 New-AzureRmPublicIpAddress -Name albpsvm-ip01 -ResourceGroupName albps  `
--AllocationMethod Static -DomainNameLabel albpsvmip01 -Location westus2
+-AllocationMethod Static -DomainNameLabel **************** -Location westus2
 
 New-AzureRmPublicIpAddress -Name albpsvm-ip02 -ResourceGroupName albps  `
--AllocationMethod Static -DomainNameLabel albpsvmip02 -Location westus2
+-AllocationMethod Static -DomainNameLabel **************** -Location westus2
 
 # Get Public IP Address
 Get-AzureRmPublicIpAddress -ResourceGroupName albps | select name, ipaddress 
@@ -449,9 +483,13 @@ mstsc /v: $pip2.IpAddress
 #  Create Azure Load Balancer
 
 ##########################################################################
-# Create IP for ALB 
+#
+# About Azure Load Balancer
+# https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-overview
+
+# Create IP for ALB (Change DomainNameLabel)
 New-AzureRmPublicIpAddress -Name ALBpsPubip -ResourceGroupName albps `
--AllocationMethod Static -Location westus2 -DomainNameLabel albpspubip
+-AllocationMethod Static -Location westus2 -DomainNameLabel *****************
 
 # get ip etc # set variables
 $publicIP = Get-AzureRmPublicIpAddress -Name ALBpsPubip -ResourceGroupName albps 
@@ -459,12 +497,12 @@ $frontendIP = New-AzureRmLoadBalancerFrontendIpConfig -Name LB-Frontend -PublicI
 $beaddresspool = New-AzureRmLoadBalancerBackendAddressPoolConfig -Name LB-backend
 $vnet = Get-AzureRmVirtualNetwork -ResourceGroupName albps -Name ALBPS-VNet
 
-# Create the NAT rules (optional)
+# Create the NAT rules (optional - not required for lab)
 # $inboundNATRule1= New-AzureRmLoadBalancerInboundNatRuleConfig -Name RDP1 -FrontendIpConfiguration $frontendIP -Protocol TCP -FrontendPort 3441 -BackendPort 3389
 # $inboundNATRule2= New-AzureRmLoadBalancerInboundNatRuleConfig -Name RDP2 -FrontendIpConfiguration $frontendIP -Protocol TCP -FrontendPort 3442 -BackendPort 3389
 
-# Create a health probe. There are two ways to configure a probe:
-# HTTP probe (two methods)
+# Create a health probe. 
+# HTTP probe (two methods, using TCP in this lab)
 #  $healthProbe = New-AzureRmLoadBalancerProbeConfig -Name HealthProbe -RequestPath 'HealthProbe.aspx' -Protocol http -Port 80 -IntervalInSeconds 15 -ProbeCount 2
 # TCP probe
 $healthProbe = New-AzureRmLoadBalancerProbeConfig -Name HealthProbe -Protocol Tcp -Port 80 -IntervalInSeconds 15 -ProbeCount 2
@@ -479,10 +517,7 @@ $NRPLB = New-AzureRmLoadBalancer -ResourceGroupName albps -Name LoadBalancerPS -
 
 $NRPLB
 
-<### Next Steps  ############################################
-        add vms/availability set to backend pools on ALB 
-        RDP and setup machines with 
-############################################################>
+### Next Steps add vms/availability set to backend pools on ALB 
 
 # Load the load balancer resource into a variable
 $loadbalancer = Get-AzureRmLoadBalancer -Name LoadBalancerPS -ResourceGroupName albps
@@ -554,7 +589,7 @@ New-AzureRMResourceGroup -name TrafficPS -location westus
 
 $profile = New-AzureRmTrafficManagerProfile -Name MyTrafficMgrProfile `
 -ResourceGroupName TrafficPS -TrafficRoutingMethod Weighted `
--RelativeDnsName kolketrafficpsdemo -Ttl 30 -MonitorProtocol `
+-RelativeDnsName *********************** -Ttl 30 -MonitorProtocol `
 HTTP -MonitorPort 80 -MonitorPath "/"
 
 $ip1 = Get-AzureRmPublicIpAddress -Name ALBpsPubip -ResourceGroupName albps
@@ -568,7 +603,7 @@ New-AzureRmTrafficManagerEndpoint -Name AGWPS -ProfileName MyTrafficMgrProfile `
  -EndpointStatus Enabled
 
 #make sure you change subdomain name to match TM profile name in url below
-start-process http://kolketrafficpsdemo.trafficmanager.net
+start-process http://***********************.trafficmanager.net
 
 # More about trafficmgr and powershell
 # https://docs.microsoft.com/en-us/azure/traffic-manager/traffic-manager-powershell-arm#create-a-traffic-manager-profile
@@ -665,3 +700,5 @@ Get-AzureRmResource | Where-Object { $_.ResourceGroupName -CLike "*blah*"} | sel
 # Remove-AzureRmResourceGroup -Name blah
 
 Start-Process -FilePath "http://portal.azure.com" 
+
+start-process -filepath "http://resources.azure.com"
