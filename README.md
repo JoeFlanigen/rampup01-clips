@@ -56,6 +56,9 @@ If you are just getting started with Azure and don't know what tools to use to r
 <br><small>Powershell ISE on Windows</small>
 
 <h2>Tips & Tricks</h2>
+<h3>Read the Labs and Follow the Links</h3>
+<p>All the instructions you need are in the labs. Follow the links to find out more about the various services and solutions you are deploying. 
+
 <h3>You can't run it all at once</h3>
 <p>Note that with these labs you will not be able to just run the code all at once.  You will have to read the scripts, edit them and make changes and run them.  In this process hopefully you will learn a lot about Powershell and CLI and how the various solutions work. Part of the process is also learning how to read the error messages.  It's all part of getting comfortable with Azure and how this stuff works.
 
