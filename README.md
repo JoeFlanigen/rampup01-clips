@@ -34,26 +34,19 @@ https://docs.microsoft.com/en-us/cli/azure/install-azure-cli
 Pick your Editor
 If you are just getting started with Azure and don't know what tools to use to run the scripts I would recommend the following for your choice of Editors.
 
-
-For Windows use Powershell ISE and setup the split window with your script in one window, and the terminal in the other. Highlight one line at a time and run the selection by selecting F8.  In windows, you can use Powershell ISE with either the Powershell lab, or the CLI lab, both will work in ISE.
-
-
-For Mac users, I'd recommend using VS Code and setup the same split window.  You want to add the Azure CLI extension and save your file with the .azcli.  Then you can highlight your code and do the same process.  Rumor is you can also use VS Code to run Powershell on your mac but I haven't spent the time to try that.  VS Code also works on Windows. So you can do that as well. 
+<li>For Windows use Powershell ISE and setup the split window with your script in one window, and the terminal in the other. Highlight one line at a time and run the selection by selecting F8.  In windows, you can use Powershell ISE with either the Powershell lab, or the CLI lab, both will work in ISE.</li>
 
 
-One more thing, of course you will need an Azure Subscription. If you don't have one, you can sign up for a free trial at www.azure.com. 
+<li>For Mac users, I'd recommend using VS Code and setup the same split window.  You want to add the Azure CLI extension and save your file with the .azcli.  Then you can highlight your code and do the same process.  Rumor is you can also use VS Code to run Powershell on your mac but I haven't spent the time to try that.  VS Code also works on Windows. So you can do that as well.</li> 
 
-Download the Labs and Get Going
-Download the following labs from my github account and unzip. 
+<p>One more thing, of course you will need an Azure Subscription. If you don't have one, you can sign up for a free trial at www.azure.com. 
 
-[ Insert link to download here ]
-
-The files are saved as text files so you can open them easily, then copy and paste them into your editor, not terminal.  When you are ready to go, it should look like this.
-
+<h2>Download the Labs and Get Going</h2>
+<p>Download the following labs from my github account and unzip. 
+<p>https://github.com/dkj0/rampup01-clips
+<p>The files are saved as text files so you can open them easily, then copy and paste them into your editor, not terminal.  When you are ready to go, it should look like this.
 
 VS Code on Mac
-
-
 Powershell ISE on Windows
 
 Tips & Tricks
