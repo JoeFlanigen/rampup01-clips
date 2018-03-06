@@ -23,7 +23,7 @@
 
 <img src="https://raw.githubusercontent.com/dkj0/rampup01-clips/master/blogimages/visio.png">
 
-<h2>Prerequisites </h2>
+<h1>Prerequisites </h1>
 <p>If you haven't done it already, there is some stuff you need to make sure you have installed before we begin on the lab. 
 <p><b>Windows, use the Webplatform Installer:</b>
 https://www.microsoft.com/web/downloads/platform.aspx
@@ -41,12 +41,13 @@ If you are just getting started with Azure and don't know what tools to use to r
 <p>One more thing, of course you will need an Azure Subscription. If you don't have one, you can sign up for a free trial at www.azure.com. 
 
 <h2>Download the Labs and Get Going</h2>
-<p>Download the following labs from my github account and unzip. 
- <ul><li>
-<p>https://github.com/dkj0/rampup01-clips
-  </li>
+<p>Download the following labs from my github unzip. 
+ <ul>
+  <li>Repository: https://github.com/dkj0/rampup01-clips </li>
+  <li>Link to CLI: https://github.com/dkj0/rampup01-clips/blob/master/cli-lab-agw-alb-tm.azcli
+   <li>Link to PS: https://github.com/dkj0/rampup01-clips/blob/master/ps-lab-agw-alb-tm.ps
   </ul>
-<p>The files are saved as text files so you can open them easily, then copy and paste them into your editor, not terminal.  When you are ready to go, it should look like this.
+<p>You can open the files as text files and copy and paste them into your editor, not terminal.  When you are ready to go, it should look like this.
 
 <img src="https://raw.githubusercontent.com/dkj0/rampup01-clips/master/blogimages/vscode-mac-lab.png">
 <br><small>VS Code on Mac</small>
