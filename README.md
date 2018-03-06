@@ -1,27 +1,27 @@
-Ramping up on Powershell & CLI 2.0 
+<h1>Ramping up on Powershell & CLI 2.0<h1>
 
-“For the things we have to learn before we can do them, we learn by doing them.”  Aristotle
+<h3>“For the things we have to learn before we can do them, we learn by doing them.”  Aristotle</h2>
 
-While I doubt that Aristotle was talking about Azure his wisdom sure holds true for me. In my experience with Azure the best way to learn is just to start building something.  
+<p>While I doubt that Aristotle was talking about Azure his wisdom sure holds true for me. In my experience with Azure the best way to learn is just to start building something.  
  
-The following labs I developed as an exercise to teach Powershell and CLI for one of my customers. This customer wanted to cover things like Virtual Networks, Network Security Groups, Resource Groups, Load Balancers vs Application Gateways and how to setup failover recovery and other scenarios. But they didn't want to just learn about them they wanted to do lots of labs. Plus this class was going to have half of the students on Windows machines and half on Mac's wanting to do both Powershell and CLI. The following is the first set of labs in a journey of labs we did together.
-The Scenario 
+<p>The following labs I developed as an exercise to teach Powershell and CLI for one of my customers. This customer wanted to cover things like Virtual Networks, Network Security Groups, Resource Groups, Load Balancers vs Application Gateways and how to setup failover recovery and other scenarios. But they didn't want to just learn about them they wanted to do lots of labs. Plus this class was going to have half of the students on Windows machines and half on Mac's wanting to do both Powershell and CLI. The following is the first set of labs in a journey of labs we did together.
 
-In these labs you will create hosted websites on virtual machines in both the East US and West US regions with a solution to manage traffic routing and failover between the two regions. 
+<h2>The Scenario </h2>
 
-Traffic Manager --> East & West Regions 
+<p>In these labs you will create hosted websites on virtual machines in both the East US and West US regions with a solution to manage traffic routing and failover between the two regions. 
 
+<ul>
+ <li>Traffic Manager --> East & West Regions </ul>
+ <ul>East & West US Regions
+  <li>Resource Group
+  <li>App Gateway in East 
+   <li>Azure Load Balancer in West
+   <li>VNETs/Subnets
+<li>2 VM's in an Availability Set
+</ul>
 
-East & West US Regions
-Resource Group
-App Gateway in East 
-Azure Load Balancer in West
-VNETs/Subnets
-2 VM's in an Availability Set
-
-
-Prerequisites 
-If you haven't done it already, there is some stuff you need to make sure you have installed before we begin on the lab. 
+<h2>Prerequisites </h2>
+<p>If you haven't done it already, there is some stuff you need to make sure you have installed before we begin on the lab. 
 
 Windows, use the Webplatform Installer:
 https://www.microsoft.com/web/downloads/platform.aspx
