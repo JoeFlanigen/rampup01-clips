@@ -20,6 +20,8 @@
 <li>2 VM's in an Availability Set
 </ul>
 
+<img src="https://raw.githubusercontent.com/dkj0/rampup01-clips/master/blogimages/visio.png">
+
 <h2>Prerequisites </h2>
 <p>If you haven't done it already, there is some stuff you need to make sure you have installed before we begin on the lab. 
 
