@@ -9,35 +9,32 @@
 <h2>The Scenario </h2>
 
 <p>In these labs you will create hosted websites on virtual machines in both the East US and West US regions with a solution to manage traffic routing and failover between the two regions. 
-
 <ul>
- <li>Traffic Manager --> East & West Regions </ul>
- <ul>East & West US Regions
-  <li>Resource Group
-  <li>App Gateway in East 
-   <li>Azure Load Balancer in West
-   <li>VNETs/Subnets
-<li>2 VM's in an Availability Set
+  <li>Traffic Manager --> East & West Regions</li>
+  <li>East & West US Regions</li>
+  <ul>
+   <li>Resource Group</li>
+   <li>App Gateway in East </li>
+   <li>Azure Load Balancer in West</li>
+   <li>VNETs/Subnets</li>
+   <li>2 VM's in an Availability Set</li>
+  </ul>
 </ul>
 
 <img src="https://raw.githubusercontent.com/dkj0/rampup01-clips/master/blogimages/visio.png">
 
 <h2>Prerequisites </h2>
 <p>If you haven't done it already, there is some stuff you need to make sure you have installed before we begin on the lab. 
-
-Windows, use the Webplatform Installer:
+<p><b>Windows, use the Webplatform Installer:</b>
 https://www.microsoft.com/web/downloads/platform.aspx
-Download and run the application
-This will enable you to install Microsoft Azure Powershell latest version
+<br>Download and run the application. This will enable you to install Microsoft Azure Powershell latest version
 
-
-Azure CLI 2.0 (Mac + Windows)
+<p><b>Azure CLI 2.0 (Mac or Windows)</b>
 https://docs.microsoft.com/en-us/cli/azure/install-azure-cli
-Pick your Editor
+<h3>Pick your Editor</h3>
 If you are just getting started with Azure and don't know what tools to use to run the scripts I would recommend the following for your choice of Editors.
 <ul>
 <li>For Windows use Powershell ISE and setup the split window with your script in one window, and the terminal in the other. Highlight one line at a time and run the selection by selecting F8.  In windows, you can use Powershell ISE with either the Powershell lab, or the CLI lab, both will work in ISE.</li>
-
 
 <li>For Mac users, I'd recommend using VS Code and setup the same split window.  You want to add the Azure CLI extension and save your file with the .azcli.  Then you can highlight your code and do the same process.  Rumor is you can also use VS Code to run Powershell on your mac but I haven't spent the time to try that.  VS Code also works on Windows. So you can do that as well.</li> 
 </ul>
