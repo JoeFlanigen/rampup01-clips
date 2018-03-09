@@ -62,10 +62,10 @@ If you are just getting started with Azure and don't know what tools to use to r
 <h3>Edit, Select and Run</h3>
 <p>Select each line of the code, right click and run. Read the variables and values. </p>
 
-<p><img src="https://raw.githubusercontent.com/dkj0/rampup01-clips/master/blogimages/right-click-ISE.png" style="border-width:1px">
+<p><img src="https://raw.githubusercontent.com/dkj0/rampup01-clips/master/blogimages/right-click-ISE.png" style="border-width:thin">
  <br><small>Powershell ISE - Right Click Run Selection</small></p>
 
-<p><img src="https://raw.githubusercontent.com/dkj0/rampup01-clips/master/blogimages/run-line-in-editor.png" style="border-width:1px"><br><small>VS Code - Right Click Run Line in Terminal</small></p> 
+<p><img src="https://raw.githubusercontent.com/dkj0/rampup01-clips/master/blogimages/run-line-in-editor.png" style="border-width:thin"><br><small>VS Code - Right Click Run Line in Terminal</small></p> 
 
 <h3>Don't forget the ` when using Powershell</h3>
 <p>In the powershell example I used ` for to continue the script on the next line. So when you highlight and run a script, make sure you catch the wrapped lines. </p>
