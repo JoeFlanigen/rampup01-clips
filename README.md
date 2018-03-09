@@ -47,9 +47,9 @@ If you are just getting started with Azure and don't know what tools to use to r
   </ul>
 <p>You can open the files as text files and copy and paste them into your editor, not terminal.  When you are ready to go, it should look like this.</p>
 
-<p><img src="https://raw.githubusercontent.com/dkj0/rampup01-clips/master/blogimages/vscode-mac-lab.png" style="border:1px"><br><small>VS Code on Mac</small></p>
+<p><img src="https://raw.githubusercontent.com/dkj0/rampup01-clips/master/blogimages/vscode-mac-lab.png" style="border-width:1px"><br><small>VS Code on Mac</small></p>
 
-<p><img src="https://raw.githubusercontent.com/dkj0/rampup01-clips/master/blogimages/powershell-ise-lab.png" style="border:1px"><br><small>Powershell ISE on Windows</small></p>
+<p><img src="https://raw.githubusercontent.com/dkj0/rampup01-clips/master/blogimages/powershell-ise-lab.png" style="border-width:1px"><br><small>Powershell ISE on Windows</small></p>
 
 <hr>
 <h2>Tips & Tricks</h2>
@@ -62,18 +62,18 @@ If you are just getting started with Azure and don't know what tools to use to r
 <h3>Edit, Select and Run</h3>
 <p>Select each line of the code, right click and run. Read the variables and values. </p>
 
-<p><img src="https://raw.githubusercontent.com/dkj0/rampup01-clips/master/blogimages/right-click-ISE.png" style="border:1px">
+<p><img src="https://raw.githubusercontent.com/dkj0/rampup01-clips/master/blogimages/right-click-ISE.png" style="border-width:1px">
  <br><small>Powershell ISE - Right Click Run Selection</small></p>
 
-<p><img src="https://raw.githubusercontent.com/dkj0/rampup01-clips/master/blogimages/run-line-in-editor.png" style="border:1px"><br><small>VS Code - Right Click Run Line in Terminal</small></p> 
+<p><img src="https://raw.githubusercontent.com/dkj0/rampup01-clips/master/blogimages/run-line-in-editor.png" style="border-width:1px"><br><small>VS Code - Right Click Run Line in Terminal</small></p> 
 
 <h3>Don't forget the ` when using Powershell</h3>
 <p>In the powershell example I used ` for to continue the script on the next line. So when you highlight and run a script, make sure you catch the wrapped lines. </p>
-<img src="https://raw.githubusercontent.com/dkj0/rampup01-clips/master/blogimages/powershell-ise-wrap.png">
+<img src="https://raw.githubusercontent.com/dkj0/rampup01-clips/master/blogimages/powershell-ise-wrap.png" style="border-width:1px">
 <h3>The Virtual Machines need IIS installed for this lab to work</h3>
 <p>For these labs we are deploying Windows VM's and in order to have them act like web servers you will need to install IIS.  Do do this you will RDP to the VM's and run a powershell script on each VM to install IIS and the necessary tools. Don't worry, it's all in the instructions/comments of the script. The powershell to run on the VM's is. The biggest mistake is that students forget to remove the # when trying to run it. </p>
 <p><b>Install-WindowsFeature -name Web-Server -IncludeManagementTools </b></p>
-<img src="https://raw.githubusercontent.com/dkj0/rampup01-clips/master/blogimages/run-install-web-server-tools.png" style="border:1px">
+<img src="https://raw.githubusercontent.com/dkj0/rampup01-clips/master/blogimages/run-install-web-server-tools.png" style="border-width:1px">
 <p>After running this, navigate to the following file on the VM and edit in Notepad.</p>
 
 <p>C:\inetpub\wwwroot\iistart.html</p>
