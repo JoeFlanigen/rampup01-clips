@@ -58,7 +58,7 @@ New-AzureRMResourceGroup -name AGWPS -location eastus
 # create Standard Storage account for boot diagnostics (select a new name, name must be unique in AZ)
 # name is lowercase alpha and numbers - no special characters
 # note: the name is not used in the rest of this script so you don't have to be too picky
-New-AzureRmStorageAccount –StorageAccountName ************ -Location eastus -ResourceGroupName AGWPS -SkuName Standard_LRS
+New-AzureRmStorageAccount –StorageAccountName *********** -Location eastus -ResourceGroupName AGWPS -SkuName Standard_LRS
 
 # Premium Storage No longer necessary for managed disks virtual machines 
 # Create a new premium storage account for our vm's (select a new name, must be unique in AZ)
@@ -89,11 +89,10 @@ $rule2 = New-AzureRmNetworkSecurityRuleConfig -Name rdp-rule -Description "Allow
 -DestinationAddressPrefix * -DestinationPortRange 3389
 
 # Load all values into a variable that will execute the new-NSG powershell
-$nsg = New-AzureRmNetworkSecurityGroup -ResourceGroupName agwps -Location eastus `
+New-AzureRmNetworkSecurityGroup -ResourceGroupName agwps -Location eastus `
 -Name "agwps-nsg" -SecurityRules $rule1,$rule2
 
-# This runs the script for NSG
-$nsg
+
  
 ##############################################################################
 #
@@ -106,17 +105,17 @@ $nsg
 # More common use case is to use dynamic IP addresses for VM's.
 
 New-AzureRmPublicIpAddress -Name agwpsvm-ip01 -ResourceGroupName agwps  `
--AllocationMethod Static -DomainNameLabel *************** -Location eastus
+-AllocationMethod Static -DomainNameLabel ************ -Location eastus
 
 New-AzureRmPublicIpAddress -Name agwpsvm-ip02 -ResourceGroupName agwps  `
--AllocationMethod Static -DomainNameLabel *************** -Location eastus
+-AllocationMethod Static -DomainNameLabel ************ -Location eastus
 
 # About Azure Public IP addresses
 # https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-ip-addresses-overview-arm
 
 
 # Get Public IP Address
-Get-AzureRmPublicIpAddress -ResourceGroupName agwps | select name, ipaddress 
+Get-AzureRmPublicIpAddress -ResourceGroupName agwps | select name, ipaddress, location 
 
 # Remove-AzureRmPublicIpAddress -name <name> -ResourceGroupName <g>
 
@@ -136,17 +135,13 @@ $Subnet = New-AzureRmVirtualNetworkSubnetConfig -Name "AGWPSSubnet" -AddressPref
 $VNet = New-AzureRmvirtualNetwork -Name "AGWPSVnet" -ResourceGroupName "AGWPS" `
 -Location "East US" -AddressPrefix 10.0.0.0/16 -Subnet $Subnet 
 
-$VNet = Get-AzureRmvirtualNetwork -Name "AGWPSVnet" -ResourceGroupName "AGWPS"
+# Create 2nd subnet in Vnet for VM's 
 
-# create 2nd subnet in Vnet for VM's 
-
-$vnet = Get-AzureRmVirtualNetwork -ResourceGroupName AGWPS -Name AGWPSVnet
-
-#add a subnet to the new vnet variable
-Add-AzureRmVirtualNetworkSubnetConfig -Name AGWVMs `
--VirtualNetwork $vnet -AddressPrefix 10.0.1.0/24
+# add a subnet to the vnet
+Add-AzureRmVirtualNetworkSubnetConfig -Name AGWVMs -VirtualNetwork $vnet -AddressPrefix 10.0.1.0/24
 
 Set-AzureRmVirtualNetwork -VirtualNetwork $vnet
+
 
 
 ##############################################################################
@@ -222,7 +217,8 @@ New-AzureRmVM -ResourceGroupName AGWPS -Location eastus -VM $vmConfig
 $pip1 = Get-AzureRmPublicIpAddress -Name agwpsvm-ip01 -ResourceGroupName AGWPS 
 $pip2 = Get-AzureRmPublicIpAddress -Name agwpsvm-ip02 -ResourceGroupName AGWPS
 
-# install webserver tools - run powershell on windows vm - copy & run on VMS
+# install webserver tools - run powershell on windows vm 
+# copy & run this powershell command on each VM - in powershell (without the comment #)
 # Install-WindowsFeature -name Web-Server -IncludeManagementTools
 
 # Also, edit VM's webserver homepage with name of each machine so we can identify in tests
@@ -241,6 +237,8 @@ mstsc /v: $pip2.IpAddress
 # About Application Gateways
 # https://docs.microsoft.com/en-us/azure/application-gateway/application-gateway-introduction
 
+##### add powershell link for SSL certificate offloading 
+
 # NOTE: This example won't work until the VM's have the Web Server Tools installed in previous step.
 #
 # First we create an IP addy for AppGW,
@@ -253,9 +251,11 @@ New-AzureRmPublicIpAddress -Name AGWpsPubip -ResourceGroupName agwps  `
 
 $vnet = Get-AzureRmVirtualNetwork -Name AGWPSVnet -ResourceGroupName AGWPS 
 $Subnet = Get-AzureRmVirtualNetworkSubnetConfig -Name AGWPSSubnet -VirtualNetwork $VNet
+$pip1 = Get-AzureRmPublicIpAddress -Name agwpsvm-ip01 -ResourceGroupName AGWPS 
+$pip2 = Get-AzureRmPublicIpAddress -Name agwpsvm-ip02 -ResourceGroupName AGWPS
 
 $GatewayIPconfig = New-AzureRmApplicationGatewayIPConfiguration -Name "GatewayIp01" -Subnet $Subnet 
-$Pool = New-AzureRmApplicationGatewayBackendAddressPool -Name "Pool01" -BackendIPAddresses 10.10.10.1, 10.10.10.2, 10.10.10.3
+$Pool = New-AzureRmApplicationGatewayBackendAddressPool -Name "Pool01" -BackendIPAddresses $pip1.IpAddress, $pip2.IpAddress
 $PoolSetting = New-AzureRmApplicationGatewayBackendHttpSettings -Name "PoolSetting01"  -Port 80 -Protocol "Http" -CookieBasedAffinity "Disabled"
 $FrontEndPort = New-AzureRmApplicationGatewayFrontendPort -Name "FrontEndPort01"  -Port 80
 
@@ -276,24 +276,29 @@ Get-AzureRmApplicationGateway | select name, location, ResourceGroupName
 ### next get IP addresses for backend pools (if using ip addresses)
 Get-AzureRmPublicIpAddress | select name, ipaddress
 
+$agwip = Get-AzureRmPublicIpAddress -Name AGWpsPubip -ResourceGroupName agwps
+$agwip = $agwip.IpAddress 
+start-process -filepath http://$agwip
+start chrome http://$agwip
+
 ########################################################################
 # Setting backend pools
-# this method works because my vms have static ip addresses
-# we load each IP into a variable and set that value
+# The above method works because my vms have static ip addresses, we loaded each IP into a variable and set that value
+# If you hard code IP addresses, use quotes like so
+##   - ie. -BackendIPAddresses "52.168.14.48", "13.82.181.89"
+##   or something like -BackendIPAddresses "10.0.1.4", "10.0.1.5"
 
-$pip1 = Get-AzureRmPublicIpAddress -Name agwpsvm-ip01 -ResourceGroupName agwps
-$pip2 = Get-AzureRmPublicIpAddress -Name agwpsvm-ip02 -ResourceGroupName agwps
+## try updating your AppGateway using static the subnet / local ip's 10.0.1.4 and .5 
+## note: first 3 ip's in Subnet are reserved for Azure ops so we start with .4 and .5
+
 $AppGw = Get-AzureRmApplicationGateway -Name "AppGatewayPS" -ResourceGroupName agwps
 $Pool = Set-AzureRmApplicationGatewayBackendAddressPool `
--ApplicationGateway $AppGw -Name "Pool01" -BackendIPAddresses $pip1.IpAddress, $pip2.IpAddress
-## note: can use static values for IPs - ie. -BackendIPAddresses "52.168.14.48", "13.82.181.89"
-
-Set-AzureRmApplicationGateway -ApplicationGateway $AppGw 
+ -ApplicationGateway $AppGw -Name "Pool01" -BackendIPAddresses "10.0.1.4", "10.0.1.5"
+ Set-AzureRmApplicationGateway -ApplicationGateway $AppGw 
 
 $agwip = Get-AzureRmPublicIpAddress -Name AGWpsPubip -ResourceGroupName agwps
 $agwip = $agwip.IpAddress 
 start-process -filepath http://$agwip
-
 start chrome http://$agwip
 
 # refresh until you see different machines on the backend
@@ -358,10 +363,8 @@ $rule2 = New-AzureRmNetworkSecurityRuleConfig -Name rdp-rule -Description "Allow
 -SourceAddressPrefix Internet -SourcePortRange * `
 -DestinationAddressPrefix * -DestinationPortRange 3389
 
-$nsg = New-AzureRmNetworkSecurityGroup -ResourceGroupName albps -Location westus2 `
+New-AzureRmNetworkSecurityGroup -ResourceGroupName albps -Location westus2 `
 -Name "albps-nsg" -SecurityRules $rule1,$rule2
-
-$nsg
 
 
 ##############################################################################
@@ -376,23 +379,22 @@ $nsg
 New-AzureRmVirtualNetwork -ResourceGroupName ALBPS -Name ALBPS-VNet `
 -AddressPrefix 10.0.0.0/16 -Location westus2
 
-# Store the virtual network object in a variable:
+# Store the virtual network object in a variable
 $vnet = Get-AzureRmVirtualNetwork -ResourceGroupName ALBPS -Name ALBPS-VNet
 
-#add a subnet to the new vnet variable
+# Add a subnet to the new vnet variable
 Add-AzureRmVirtualNetworkSubnetConfig -Name FrontEnd01 `
 -VirtualNetwork $vnet -AddressPrefix 10.0.1.0/24
 
-#Add-AzureRmVirtualNetworkSubnetConfig -Name FrontEnd02 `
+# Note: you can add many more subnets, like so... 
+# Add-AzureRmVirtualNetworkSubnetConfig -Name FrontEnd02 `
 #-VirtualNetwork $vnet -AddressPrefix 10.0.2.0/24
 
-# add subnet for backend 
+# And maybe add subnet for backend 
 # Add-AzureRmVirtualNetworkSubnetConfig -Name BackEnd01 `
 # -VirtualNetwork $vnet -AddressPrefix 10.0.3.0/24
 
-# Add-AzureRmVirtualNetworkSubnetConfig -Name BackEnd02 `
-# -VirtualNetwork $vnet -AddressPrefix 10.0.4.0/24
-
+# need to run Set after adding the subnets
 Set-AzureRmVirtualNetwork -VirtualNetwork $vnet
 
 # Remove-AzureRmVirtualNetwork -name <name> -ResourceGroupName <group>
