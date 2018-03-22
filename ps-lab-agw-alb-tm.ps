@@ -241,10 +241,10 @@ mstsc /v: $pip2.IpAddress
 
 # NOTE: This example won't work until the VM's have the Web Server Tools installed in previous step.
 #
-# First we create an IP addy for AppGW,
-# 
+# First we create an IP addy for AppGW
+# change the DomainNameLabel to be unique. lowercase numeric only, no special characters
 New-AzureRmPublicIpAddress -Name AGWpsPubip -ResourceGroupName agwps  `
--AllocationMethod Dynamic -Location eastus
+-AllocationMethod Dynamic -Location eastus -DomainNameLabel *******************
 
 # The following command: Creates the App Gateway, 
 # Sets the backend pools to ip addresses in subnet with VM's
