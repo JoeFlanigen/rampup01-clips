@@ -266,7 +266,7 @@ az network nsg rule create --resource-group alb --nsg-name alb-nsg --name web-ru
 az network nsg rule create --resource-group alb --nsg-name alb-nsg --name rdp-rule --description "allow rdp" --direction inbound --protocol tcp --source-port-range "*" --source-address-prefix internet --destination-port-range 3389 --access allow --priority 120 
 
 # List NSG Rules
-az network nsg rule list --resource-group agw --nsg-name agw-nsg --output table 
+az network nsg rule list --resource-group alb --nsg-name alb-nsg --output table 
 
 ###  if you need to delete and redo
 # az network nsg rule delete --resource-group blah --nsg-name blah-nsg --name web-rule 
